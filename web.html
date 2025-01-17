@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Custom Search Website</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header Styling */
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            font-size: 2.5em;
+        }
+        header p {
+            font-size: 1.2em;
+            margin-top: 5px;
+        }
+
+        /* Container Styles */
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        /* Custom Google Search Styling */
+        .gcse-search input {
+            width: 80%;
+            padding: 12px 20px;
+            font-size: 1.1em;
+            border: 2px solid #ccc;
+            border-radius: 25px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .gcse-search input:focus {
+            border-color: #4CAF50; /* Green when focused */
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+        }
+
+        .gcse-search button {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            margin-left: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .gcse-search button:hover {
+            background-color: #45a049; /* Slightly darker green on hover */
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Welcome to My Custom Search Engine</h1>
+        <p>Search across the web or your chosen sites!</p>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Google Custom Search Embed Code -->
+        <script async src="https://cse.google.com/cse.js?cx=64868aaf3b6d64c1e"></script>
+        <div class="gcse-search"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 My Custom Search Website. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
