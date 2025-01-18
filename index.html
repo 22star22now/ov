@@ -69,72 +69,12 @@
         .start-menu li:hover {
             background-color: #444;
         }
-
-        /* Draggable and resizable window */
-        .window {
-            position: absolute;
-            top: 100px;
-            left: 100px;
-            width: 70%;
-            height: 70%;
-            background: white;
-            border: 2px solid #333;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            display: none;
-            z-index: 10;
-        }
-
-        .window-header {
-            background: #333;
-            color: white;
-            padding: 5px 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: move;
-        }
-
-        .window-header button {
-            background: red;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        .window-content {
-            width: 100%;
-            height: calc(100% - 30px); /* Subtract header height */
-            overflow: hidden;
-            position: relative; /* Ensure iframe fills its container */
-        }
-
-        .window-content iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .resize-handle {
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            background: #333;
-            bottom: 0;
-            right: 0;
-            cursor: nwse-resize;
-        }
     </style>
 </head>
 <body>
     <!-- Taskbar -->
     <div class="taskbar">
         <img src="https://img.icons8.com/ios11/512/windows-10.png" alt="Start Menu" id="startMenuButton">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/1024px-Google_Chrome_icon_%28February_2022%29.svg.png" alt="Chrome" id="chromeButton">
-        <img src="https://cdn.icon-icons.com/icons2/2699/PNG/512/minecraft_logo_icon_168974.png" alt="Minecraft" id="minecraftButton">
         <div class="clock" id="clock"></div>
     </div>
 
@@ -155,7 +95,6 @@
         <div class="window-content">
             <iframe src="web.html"></iframe>
         </div>
-        <div class="resize-handle"></div>
     </div>
 
     <!-- Minecraft Window -->
@@ -167,7 +106,6 @@
         <div class="window-content">
             <iframe src="https://eaglercraft.com/mc/1.8.8/"></iframe>
         </div>
-        <div class="resize-handle"></div>
     </div>
 
     <script>
@@ -182,63 +120,20 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Dragging functionality
-        const makeDraggable = (windowElement) => {
-            const header = windowElement.querySelector('.window-header');
-            let isDragging = false;
-            let offsetX = 0, offsetY = 0;
+        // Start Menu toggle
+        const startMenu = document.getElementById('startMenu');
+        const startMenuButton = document.getElementById('startMenuButton');
 
-            header.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                offsetX = e.clientX - windowElement.offsetLeft;
-                offsetY = e.clientY - windowElement.offsetTop;
-                windowElement.style.zIndex = 1000;
-            });
+        startMenuButton.addEventListener('click', () => {
+            // Toggle Start Menu visibility
+            startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
+        });
 
-            document.addEventListener('mousemove', (e) => {
-                if (isDragging) {
-                    windowElement.style.left = `${e.clientX - offsetX}px`;
-                    windowElement.style.top = `${e.clientY - offsetY}px`;
-                }
-            });
-
-            document.addEventListener('mouseup', () => {
-                isDragging = false;
-            });
-        };
-
-        // Resizing functionality
-        const makeResizable = (windowElement) => {
-            const resizeHandle = windowElement.querySelector('.resize-handle');
-            let isResizing = false;
-
-            resizeHandle.addEventListener('mousedown', (e) => {
-                isResizing = true;
-                e.preventDefault();
-            });
-
-            document.addEventListener('mousemove', (e) => {
-                if (isResizing) {
-                    const rect = windowElement.getBoundingClientRect();
-                    windowElement.style.width = `${e.clientX - rect.left}px`;
-                    windowElement.style.height = `${e.clientY - rect.top}px`;
-                }
-            });
-
-            document.addEventListener('mouseup', () => {
-                isResizing = false;
-            });
-        };
-
-        // Initialize draggable and resizable windows
-        const chromeWindow = document.getElementById('chromeWindow');
-        const minecraftWindow = document.getElementById('minecraftWindow');
-
-        makeDraggable(chromeWindow);
-        makeResizable(chromeWindow);
-
-        makeDraggable(minecraftWindow);
-        makeResizable(minecraftWindow);
+        document.addEventListener('click', (e) => {
+            if (!startMenu.contains(e.target) && e.target !== startMenuButton) {
+                startMenu.style.display = 'none'; // Close if clicked outside
+            }
+        });
 
         // Open and close window functionality
         function openWindow(windowId) {
@@ -248,20 +143,6 @@
         function closeWindow(windowId) {
             document.getElementById(windowId).style.display = 'none';
         }
-
-        // Start Menu functionality
-        const startMenu = document.getElementById('startMenu');
-        const startMenuButton = document.getElementById('startMenuButton');
-
-        startMenuButton.addEventListener('click', () => {
-            startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!startMenu.contains(e.target) && e.target !== startMenuButton) {
-                startMenu.style.display = 'none';
-            }
-        });
     </script>
 </body>
 </html>
