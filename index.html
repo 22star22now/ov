@@ -35,6 +35,11 @@
             cursor: pointer;
         }
 
+        .taskbar .apps {
+            display: flex;
+            gap: 10px;
+        }
+
         .clock {
             margin-left: auto;
             color: white;
@@ -75,13 +80,13 @@
             position: absolute;
             top: 100px;
             left: 100px;
-            width: 70%;
-            height: 70%;
+            width: 400px;
+            height: 300px;
             background: white;
             border: 2px solid #333;
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            display: none; /* Hidden by default */
+            display: none;
             z-index: 10;
         }
 
@@ -111,10 +116,14 @@
             overflow: hidden;
         }
 
-        .window-content iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+        .resize-handle {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: #333;
+            bottom: 0;
+            right: 0;
+            cursor: nwse-resize;
         }
     </style>
 </head>
@@ -122,6 +131,7 @@
     <!-- Taskbar -->
     <div class="taskbar">
         <img src="https://img.icons8.com/ios11/512/windows-10.png" alt="Start Menu" id="startMenuButton">
+        <div class="apps" id="taskbarApps"></div>
         <div class="clock" id="clock"></div>
     </div>
 
@@ -142,6 +152,7 @@
         <div class="window-content">
             <iframe src="web.html"></iframe>
         </div>
+        <div class="resize-handle"></div>
     </div>
 
     <!-- Minecraft Window -->
@@ -153,6 +164,7 @@
         <div class="window-content">
             <iframe src="https://eaglercraft.com/mc/1.8.8/"></iframe>
         </div>
+        <div class="resize-handle"></div>
     </div>
 
     <script>
@@ -182,13 +194,93 @@
         });
 
         // Open and close window functionality
+        const taskbarApps = document.getElementById('taskbarApps');
+
         function openWindow(windowId) {
-            document.getElementById(windowId).style.display = 'block';
+            const windowElement = document.getElementById(windowId);
+            windowElement.style.display = 'block';
+
+            // Add to taskbar if not already present
+            if (!document.getElementById(`${windowId}Taskbar`)) {
+                const appIcon = document.createElement('img');
+                appIcon.id = `${windowId}Taskbar`;
+                appIcon.src = windowId === 'chromeWindow' 
+                    ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/1024px-Google_Chrome_icon_%28February_2022%29.svg.png' 
+                    : 'https://cdn.icon-icons.com/icons2/2699/PNG/512/minecraft_logo_icon_168974.png';
+                appIcon.alt = windowId;
+                appIcon.style.cursor = 'pointer';
+                appIcon.addEventListener('click', () => {
+                    windowElement.style.display = 'block';
+                });
+                taskbarApps.appendChild(appIcon);
+            }
         }
 
         function closeWindow(windowId) {
             document.getElementById(windowId).style.display = 'none';
+
+            // Remove from taskbar
+            const taskbarIcon = document.getElementById(`${windowId}Taskbar`);
+            if (taskbarIcon) taskbarIcon.remove();
         }
+
+        // Dragging functionality
+        function makeDraggable(windowElement) {
+            const header = windowElement.querySelector('.window-header');
+            let isDragging = false;
+            let offsetX = 0, offsetY = 0;
+
+            header.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                offsetX = e.clientX - windowElement.offsetLeft;
+                offsetY = e.clientY - windowElement.offsetTop;
+                windowElement.style.zIndex = 1000;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    windowElement.style.left = `${e.clientX - offsetX}px`;
+                    windowElement.style.top = `${e.clientY - offsetY}px`;
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+        }
+
+        // Resizing functionality
+        function makeResizable(windowElement) {
+            const resizeHandle = windowElement.querySelector('.resize-handle');
+            let isResizing = false;
+
+            resizeHandle.addEventListener('mousedown', (e) => {
+                isResizing = true;
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isResizing) {
+                    const rect = windowElement.getBoundingClientRect();
+                    windowElement.style.width = `${e.clientX - rect.left}px`;
+                    windowElement.style.height = `${e.clientY - rect.top}px`;
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isResizing = false;
+            });
+        }
+
+        // Initialize windows
+        const chromeWindow = document.getElementById('chromeWindow');
+        const minecraftWindow = document.getElementById('minecraftWindow');
+
+        makeDraggable(chromeWindow);
+        makeResizable(chromeWindow);
+
+        makeDraggable(minecraftWindow);
+        makeResizable(minecraftWindow);
     </script>
 </body>
 </html>
