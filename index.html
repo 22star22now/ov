@@ -41,6 +41,35 @@
             font-size: 14px;
         }
 
+        /* Start Menu */
+        .start-menu {
+            position: fixed;
+            bottom: 50px;
+            left: 10px;
+            width: 200px;
+            background-color: #333;
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 1001;
+        }
+
+        .start-menu ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .start-menu li {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .start-menu li:hover {
+            background-color: #444;
+        }
+
         /* Draggable and resizable window */
         .window {
             position: absolute;
@@ -107,6 +136,14 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/1024px-Google_Chrome_icon_%28February_2022%29.svg.png" alt="Chrome" id="chromeButton">
         <img src="https://cdn.icon-icons.com/icons2/2699/PNG/512/minecraft_logo_icon_168974.png" alt="Minecraft" id="minecraftButton">
         <div class="clock" id="clock"></div>
+    </div>
+
+    <!-- Start Menu -->
+    <div class="start-menu" id="startMenu">
+        <ul>
+            <li onclick="openWindow('chromeWindow')">Chrome</li>
+            <li onclick="openWindow('minecraftWindow')">Minecraft</li>
+        </ul>
     </div>
 
     <!-- Chrome Window -->
@@ -204,17 +241,27 @@
         makeResizable(minecraftWindow);
 
         // Open and close window functionality
-        document.getElementById('chromeButton').addEventListener('click', () => {
-            chromeWindow.style.display = 'block';
-        });
-
-        document.getElementById('minecraftButton').addEventListener('click', () => {
-            minecraftWindow.style.display = 'block';
-        });
+        function openWindow(windowId) {
+            document.getElementById(windowId).style.display = 'block';
+        }
 
         function closeWindow(windowId) {
             document.getElementById(windowId).style.display = 'none';
         }
+
+        // Start Menu functionality
+        const startMenu = document.getElementById('startMenu');
+        const startMenuButton = document.getElementById('startMenuButton');
+
+        startMenuButton.addEventListener('click', () => {
+            startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!startMenu.contains(e.target) && e.target !== startMenuButton) {
+                startMenu.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
