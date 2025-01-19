@@ -81,8 +81,8 @@
             position: absolute;
             top: 100px;
             left: 100px;
-            width: 70%;
-            height: 70%;
+            width: 600px;
+            height: 400px;
             background: white;
             border: 2px solid #333;
             border-radius: 5px;
@@ -210,14 +210,13 @@
             startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
         });
 
-        // Window drag and resize
+        // Window drag and resize functionality
         const makeDraggableAndResizable = (windowElement) => {
             const header = windowElement.querySelector('.window-header');
             const resizeHandle = windowElement.querySelector('.resize-handle');
 
             let isDragging = false, isResizing = false, offsetX, offsetY, startWidth, startHeight;
 
-            // Dragging logic
             header.addEventListener('mousedown', (e) => {
                 isDragging = true;
                 offsetX = e.clientX - windowElement.offsetLeft;
@@ -236,7 +235,6 @@
                 isDragging = false;
             });
 
-            // Resizing logic
             resizeHandle.addEventListener('mousedown', (e) => {
                 isResizing = true;
                 startWidth = windowElement.offsetWidth;
@@ -260,14 +258,13 @@
             });
         };
 
-        // Initialize all windows
-        document.querySelectorAll('.window').forEach((win) => makeDraggableAndResizable(win));
+        document.querySelectorAll('.window').forEach(makeDraggableAndResizable);
 
         // Open and close windows
         function openWindow(windowId) {
             const windowElement = document.getElementById(windowId);
             windowElement.style.display = 'block';
-            startMenu.style.display = 'none'; // Hide Start Menu
+            windowElement.style.zIndex = 10;
         }
 
         function closeWindow(windowId) {
