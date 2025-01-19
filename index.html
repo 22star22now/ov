@@ -41,6 +41,40 @@
             font-size: 14px;
         }
 
+        /* Start Menu */
+        .start-menu {
+            position: fixed;
+            bottom: 50px;
+            left: 10px;
+            width: 200px;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 1001;
+        }
+
+        .start-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .start-menu li {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+
+        .start-menu li:hover {
+            background: #f0f0f0;
+        }
+
+        .start-menu li:last-child {
+            border-bottom: none;
+        }
+
         /* Draggable and resizable window */
         .window {
             position: absolute;
@@ -110,6 +144,15 @@
         <div class="clock" id="clock"></div>
     </div>
 
+    <!-- Start Menu -->
+    <div class="start-menu" id="startMenu">
+        <ul>
+            <li onclick="openWindow('chromeWindow')">Chrome</li>
+            <li onclick="openWindow('minecraftWindow')">Minecraft</li>
+            <li onclick="openWindow('gamesWindow')">Games</li>
+        </ul>
+    </div>
+
     <!-- Chrome Window -->
     <div class="window" id="chromeWindow">
         <div class="window-header">
@@ -158,80 +201,24 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Dragging functionality
-        const makeDraggable = (windowElement) => {
-            const header = windowElement.querySelector('.window-header');
-            let isDragging = false;
-            let offsetX = 0, offsetY = 0;
+        // Toggle Start Menu
+        const startMenuButton = document.getElementById('startMenuButton');
+        const startMenu = document.getElementById('startMenu');
 
-            header.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                offsetX = e.clientX - windowElement.offsetLeft;
-                offsetY = e.clientY - windowElement.offsetTop;
-                windowElement.style.zIndex = 1000;
-            });
-
-            document.addEventListener('mousemove', (e) => {
-                if (isDragging) {
-                    windowElement.style.left = `${e.clientX - offsetX}px`;
-                    windowElement.style.top = `${e.clientY - offsetY}px`;
-                }
-            });
-
-            document.addEventListener('mouseup', () => {
-                isDragging = false;
-            });
-        };
-
-        // Resizing functionality
-        const makeResizable = (windowElement) => {
-            const resizeHandle = windowElement.querySelector('.resize-handle');
-            let isResizing = false;
-
-            resizeHandle.addEventListener('mousedown', (e) => {
-                isResizing = true;
-                e.preventDefault();
-            });
-
-            document.addEventListener('mousemove', (e) => {
-                if (isResizing) {
-                    const rect = windowElement.getBoundingClientRect();
-                    windowElement.style.width = `${e.clientX - rect.left}px`;
-                    windowElement.style.height = `${e.clientY - rect.top}px`;
-                }
-            });
-
-            document.addEventListener('mouseup', () => {
-                isResizing = false;
-            });
-        };
-
-        // Initialize draggable and resizable windows
-        const chromeWindow = document.getElementById('chromeWindow');
-        const minecraftWindow = document.getElementById('minecraftWindow');
-        const gamesWindow = document.getElementById('gamesWindow');
-
-        makeDraggable(chromeWindow);
-        makeResizable(chromeWindow);
-
-        makeDraggable(minecraftWindow);
-        makeResizable(minecraftWindow);
-
-        makeDraggable(gamesWindow);
-        makeResizable(gamesWindow);
-
-        // Open and close window functionality
-        document.getElementById('chromeButton').addEventListener('click', () => {
-            chromeWindow.style.display = 'block';
+        startMenuButton.addEventListener('click', () => {
+            if (startMenu.style.display === 'block') {
+                startMenu.style.display = 'none';
+            } else {
+                startMenu.style.display = 'block';
+            }
         });
 
-        document.getElementById('minecraftButton').addEventListener('click', () => {
-            minecraftWindow.style.display = 'block';
-        });
-
-        document.getElementById('gamesButton').addEventListener('click', () => {
-            gamesWindow.style.display = 'block';
-        });
+        // Open and close windows
+        function openWindow(windowId) {
+            const windowElement = document.getElementById(windowId);
+            windowElement.style.display = 'block';
+            startMenu.style.display = 'none'; // Close Start Menu
+        }
 
         function closeWindow(windowId) {
             document.getElementById(windowId).style.display = 'none';
