@@ -23,6 +23,7 @@
             background-color: #222;
             display: flex;
             align-items: center;
+            justify-content: flex-start;
             padding: 0 10px;
             box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
             z-index: 1000;
@@ -97,7 +98,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            cursor: move;
+            cursor: grab;
         }
 
         .window-header button {
@@ -201,23 +202,72 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Toggle Start Menu
+        // Start Menu toggle
         const startMenuButton = document.getElementById('startMenuButton');
         const startMenu = document.getElementById('startMenu');
 
         startMenuButton.addEventListener('click', () => {
-            if (startMenu.style.display === 'block') {
-                startMenu.style.display = 'none';
-            } else {
-                startMenu.style.display = 'block';
-            }
+            startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
         });
+
+        // Window drag and resize
+        const makeDraggableAndResizable = (windowElement) => {
+            const header = windowElement.querySelector('.window-header');
+            const resizeHandle = windowElement.querySelector('.resize-handle');
+
+            let isDragging = false, isResizing = false, offsetX, offsetY, startWidth, startHeight;
+
+            // Dragging logic
+            header.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                offsetX = e.clientX - windowElement.offsetLeft;
+                offsetY = e.clientY - windowElement.offsetTop;
+                windowElement.style.zIndex = 1000;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    windowElement.style.left = `${e.clientX - offsetX}px`;
+                    windowElement.style.top = `${e.clientY - offsetY}px`;
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            // Resizing logic
+            resizeHandle.addEventListener('mousedown', (e) => {
+                isResizing = true;
+                startWidth = windowElement.offsetWidth;
+                startHeight = windowElement.offsetHeight;
+                offsetX = e.clientX;
+                offsetY = e.clientY;
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isResizing) {
+                    const width = startWidth + (e.clientX - offsetX);
+                    const height = startHeight + (e.clientY - offsetY);
+                    windowElement.style.width = `${width}px`;
+                    windowElement.style.height = `${height}px`;
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isResizing = false;
+            });
+        };
+
+        // Initialize all windows
+        document.querySelectorAll('.window').forEach((win) => makeDraggableAndResizable(win));
 
         // Open and close windows
         function openWindow(windowId) {
             const windowElement = document.getElementById(windowId);
             windowElement.style.display = 'block';
-            startMenu.style.display = 'none'; // Close Start Menu
+            startMenu.style.display = 'none'; // Hide Start Menu
         }
 
         function closeWindow(windowId) {
