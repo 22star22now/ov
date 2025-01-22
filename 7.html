@@ -12,12 +12,14 @@
     </header>
     <main>
         <div class="container">
+            <!-- Game iframe with a fullscreen button -->
             <div class="iframe-wrapper">
-                <iframe class="game-frame" src="https://ubg365.github.io/drive-mad/play.html" title="Game" allowfullscreen></iframe>
+                <iframe id="game-frame" class="game-frame" src="https://ubg365.github.io/drive-mad/play.html" title="Game"></iframe>
                 <button class="fullscreen-button" onclick="toggleFullscreen('game-frame')">Fullscreen</button>
             </div>
+            <!-- Small frame with a fullscreen button -->
             <div class="iframe-wrapper">
-                <iframe class="small-frame" src="h.png" title="Small Frame" allowfullscreen></iframe>
+                <iframe id="small-frame" class="small-frame" src="h.png" title="Small Frame"></iframe>
                 <button class="fullscreen-button" onclick="toggleFullscreen('small-frame')">Fullscreen</button>
             </div>
         </div>
