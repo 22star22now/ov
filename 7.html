@@ -12,10 +12,17 @@
     </header>
     <main>
         <div class="container">
-            <iframe class="game-frame" src="https://ubg365.github.io/drive-mad/play.html" title="Game"></iframe>
-            <iframe class="small-frame" src="h.png" title="Small Frame"></iframe>
+            <div class="iframe-wrapper">
+                <iframe class="game-frame" src="https://ubg365.github.io/drive-mad/play.html" title="Game" allowfullscreen></iframe>
+                <button class="fullscreen-button" onclick="toggleFullscreen('game-frame')">Fullscreen</button>
+            </div>
+            <div class="iframe-wrapper">
+                <iframe class="small-frame" src="h.png" title="Small Frame" allowfullscreen></iframe>
+                <button class="fullscreen-button" onclick="toggleFullscreen('small-frame')">Fullscreen</button>
+            </div>
         </div>
     </main>
+    <button class="back-button" onclick="window.location.href='games.html'">Back To Main</button>
+    <script src="scripts.js"></script>
 </body>
 </html>
-<button class="back-button" onclick="window.location.href='games.html'">Back To Main</button>

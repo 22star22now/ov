@@ -32,20 +32,44 @@ main {
     flex-wrap: wrap; /* Allows frames to wrap on smaller screens */
 }
 
-.game-frame {
-    width: 1280px;
-    height: 720px;
+.iframe-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.game-frame,
+.small-frame {
     border: 2px solid #333;
     border-radius: 8px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
 }
 
+.game-frame {
+    width: 1280px;
+    height: 720px;
+}
+
 .small-frame {
     width: 100px;
     height: 200px;
-    border: 2px solid #333;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.fullscreen-button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: #ffa3e2; /* Soft pink color for button text */
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.fullscreen-button:hover {
+    background-color: #444; /* Slightly lighter on hover */
+    transform: scale(1.05); /* Subtle zoom effect */
 }
 
 .back-button {
